@@ -12,13 +12,15 @@ use tokio::time;
 async fn main() -> std::io::Result<()> {
     let exporter = opentelemetry_otlp::new_exporter().tonic();
 
-    let resource = Resource::new([KeyValue::new(SERVICE_NAME, "roll-dice")]);
+    let resource: opentelemetry_sdk::resource::Resource = Resource::new([
+        KeyValue::new(SERVICE_NAME, "pxfnc_local_service")
+    ]);
 
     let _tracer = opentelemetry_otlp::new_pipeline()
         .tracing()
         .with_exporter(exporter)
         .with_trace_config(opentelemetry_sdk::trace::config().with_resource(resource))
-        .install_batch(opentelemetry_sdk::runtime::Tokio)
+        .install_batch(opentelemetry_sdk::runtime::TokioCurrentThread)
         .expect("install failed");
 
     let _ = HttpServer::new(|| App::new().wrap(RequestTracing::new()).service(roll_dice))

@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-opentelemetry = { version = "0.21" }
-opentelemetry_sdk = { version = "0.21.1", features = ["trace", "rt-tokio"] }
+opentelemetry = { version = "0.21.0" }
+opentelemetry_sdk = { version = "0.21.0", features = ["trace", "rt-tokio-current-thread"] }
 opentelemetry-otlp = { version = "0.14" }
 opentelemetry-semantic-conventions = "0.13" 
 actix-web-opentelemetry = { version = "0.16", features = ["metrics"] }

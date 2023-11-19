@@ -6,19 +6,16 @@ services:
     volumes:
       - target:/app/target
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel:4317
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otelcol:4317
     ports:
       - 8000:8000
 
-  otel:
+  otelcol:
     image: otel/opentelemetry-collector-contrib:0.89.0
     ports:
       - 55679:55679
     volumes:
-      - ./config/otelcol.yaml:/etc/otelcol/config.yaml:ro
-
-  prometheus:
-    image: prom/prometheus
+      - ./config/otelcol.yaml:/etc/otelcol-contrib/config.yaml:ro
 
   jaeger:
     image: jaegertracing/all-in-one

@@ -1,20 +1,25 @@
-receivers:
+receivers: # データ発生源
   otlp:
     protocols:
       grpc:
 
-processors:
+processors: # データ加工
   batch:
 
-exporters:
-  jaeger:
+exporters: # 出力先
+  otlp/jaeger: # otlp/<sukina_namae>
     endpoint: jaeger:4317
     tls:
       insecure: true
 
-service:
+  otlp/newrelic:
+    endpoint: https://otlp.nr-data.net:4317
+    headers:
+      api-key: NEW_RELIC_API_KEY 
+
+service: # ここがメインの設定
   pipelines:
-    traces:
-      receivers: [otlp]
-      processors: [batch]
-      exporters: [jaeger]
+    traces:  # traceたちを
+      receivers: [otlp] # otlpで受け取り
+      processors: [batch] # batchで加工し
+      exporters: [otlp/jaeger, otlp/newrelic] #jaegerとnewrelicに送る
